@@ -5,7 +5,7 @@ const { User } = require("../models");
 
 const SECRET = process.env.JWT_SECRET;
 
-// ✅ REGISTER (FIXED - hashes password)
+
 router.post("/register", async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -13,8 +13,8 @@ router.post("/register", async (req, res) => {
     const user = await User.create({
       name: req.body.name,
       email: req.body.email,
-      password: hashedPassword, // 🔥 FIXED
-      role: req.body.role || "user" // optional but good
+      password: hashedPassword, 
+      role: req.body.role || "user" 
     });
 
     res.status(201).json(user);
@@ -23,7 +23,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// ✅ LOGIN (GOOD - keep this)
+
 router.post("/login", async (req, res) => {
   try {
     const user = await User.findOne({ where: { email: req.body.email } });
@@ -41,7 +41,7 @@ router.post("/login", async (req, res) => {
     const token = jwt.sign(
       {
         id: user.id,
-        role: user.role // 🔥 REQUIRED (you did this right)
+        role: user.role 
       },
       SECRET,
       { expiresIn: "1h" }
